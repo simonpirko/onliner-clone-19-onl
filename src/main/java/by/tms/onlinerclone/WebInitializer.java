@@ -1,5 +1,7 @@
 package by.tms.onlinerclone;
 
+import by.tms.onlinerclone.configuration.HibernateConfiguration;
+import by.tms.onlinerclone.configuration.WebConfiguration;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 /**
@@ -13,7 +15,7 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
   @Override
   protected Class<?>[] getServletConfigClasses() {
-    return new Class[]{}; //TODO:
+    return new Class[]{WebConfiguration.class, HibernateConfiguration.class};
   }
 
   @Override

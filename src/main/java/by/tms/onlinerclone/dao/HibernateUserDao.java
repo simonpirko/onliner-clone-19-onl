@@ -11,13 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.NoResultException;
 import java.util.Optional;
 
+@Transactional
 @Component
 public class HibernateUserDao {
 
     @Autowired
     private SessionFactory sessionFactory;
 
-    @Transactional
+
     public void save(User user) {
         Session currentSession = sessionFactory.getCurrentSession();
         currentSession.save(user);

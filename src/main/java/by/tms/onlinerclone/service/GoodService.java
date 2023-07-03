@@ -2,11 +2,11 @@ package by.tms.onlinerclone.service;
 
 import by.tms.onlinerclone.dao.HibernateGoodDAO;
 import by.tms.onlinerclone.entity.Good;
+import by.tms.onlinerclone.entity.GoodCharacters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author Denis Smirnov on 29.06.2023
@@ -47,4 +47,24 @@ public class GoodService {
     }
 
     public List<Good> findByCategoryId(long id) { return hibernateGoodDAO.findByCategoryId(id); }
+
+    public Map<String, List<String>> findCharactersToSelect(long categoryId) {
+
+        Set<String> ch = new HashSet<>();
+        Map<String, List<String>> characters = new HashMap<>();
+
+        List<Good> byCategoryId = hibernateGoodDAO.findByCategoryId(categoryId);
+
+        for (Good good : byCategoryId) {
+            for (GoodCharacters character : good.getCharacters()) {
+                ch.add(character.getName());
+            }
+        }
+
+        for (String s : ch) {
+            List<String> strings = hibernateGoodDAO.characterValues(s);
+            characters.put(s, strings);
+        }
+        return characters;
+    }
 }

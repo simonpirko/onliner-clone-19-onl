@@ -1,15 +1,17 @@
 package by.tms.onlinerclone.dao;
 
 import by.tms.onlinerclone.entity.Good;
-import by.tms.onlinerclone.entity.GoodCategory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Denis Smirnov on 29.06.2023
@@ -36,7 +38,7 @@ public class HibernateGoodDAO {
         currentSession.update(good);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional()
     public Good findById(long id) {
         Session currentSession = sessionFactory.getCurrentSession();
         return currentSession.get(Good.class, id);
@@ -64,6 +66,16 @@ public class HibernateGoodDAO {
         Query<Good> query =
                 currentSession.createQuery("from Good where category_id = :id", Good.class);
         query.setParameter("id", categoryId);
+        return query.getResultList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<String> characterValues(String characterName){
+        Set<String> values = new HashSet<>();
+        Session currentSession = sessionFactory.getCurrentSession();
+
+        Query<String> query = currentSession.createQuery("select gc.value from GoodCharacters gc where gc.name =: name", String.class);
+        query.setParameter("name", characterName);
         return query.getResultList();
     }
 }

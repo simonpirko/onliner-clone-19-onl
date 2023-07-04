@@ -46,7 +46,14 @@ public class GoodService {
         return hibernateGoodDAO.findAll();
     }
 
-    public List<Good> findByCategoryId(long id) { return hibernateGoodDAO.findByCategoryId(id); }
+    public List<Good> findByCategoryId(long id) {
+        return hibernateGoodDAO.findByCategoryId(id);
+    }
+
+    public List<Good> findByCategoryIdPaginated(long id, int page, int size){
+        int offset = paginate(page, size);
+        return hibernateGoodDAO.findByCategoryIdPaginated(id, size, offset);
+    }
 
     public Map<String, List<String>> findCharactersToSelect(long categoryId) {
 
@@ -66,5 +73,18 @@ public class GoodService {
             characters.put(s, strings);
         }
         return characters;
+    }
+
+    public List<Good> findByCategoryIdAndByParameters(long id, int page, int size, Map<String, String[]> parameters){
+        int offset = paginate(page, size);
+        return hibernateGoodDAO.findByCategoryIdAndByParameters(id, offset, size, parameters);
+    }
+
+    private int paginate(int page, int size){
+        if(page == 1){
+            return page * size;
+        } else {
+            return  (page - 1) * size;
+        }
     }
 }

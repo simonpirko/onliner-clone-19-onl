@@ -16,6 +16,7 @@
                 <h3 th:text="${character.getKey()}"/>
                 <ul>
                     <li th:each="value : ${character.getValue()}">
+                        <a type="checkbox" th:href="@{${uri}(character.getKey() = ${character.getValue()})}">
                         <p th:text="${value}"/>
                     </li>
                 </ul>
@@ -27,11 +28,12 @@
                 <li th:each="good : ${goodsList}">
                     <div class="row">
                         <div class="col-sm-4">
-                            <a th:href="@{/catalog/${good.getCategory().getName()}/${good.getId()}}" th:src="${good.image}"></a>
+                            <a th:href="@{/catalog/{categoryId}/${good.getId()}(categoryId = ${good.getId()})}" th:src="${good.photos.get(0)}"></a>
                         </div>
+                        ${good.getCategory().getName()}
                         <div class="col-cs-8">
-                            <a class="text-start align-self-center" th:href="@{/catalog/${good.getCategory().getName()}/${good.getId()}}" th:text="${good.name}"/>
-                            <a class="text-end align-self-center" th:href="@{/catalog/${good.getCategory().getName()}/${good.getId()}}" th:text="${good.cost}"/>
+                            <a class="text-start align-self-center" th:href="@{/catalog}" th:text="${good.name}"/>
+                            <a class="text-end align-self-center" th:href="@{/catalog}" th:text="${good.price}"/>
                         </div>
                     </div>
                 </li>

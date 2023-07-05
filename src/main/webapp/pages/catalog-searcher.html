@@ -12,11 +12,18 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-4">
-            <div th:each="character : ${characters}">
-                <h3 th:text="${character.getKey()}"/>
+            <div th:each="key : ${characters.keySet()}">
+                <h3 th:text="${key}"/>
                 <ul>
-                    <li th:each="value : ${character.getValue()}">
-                        <a type="checkbox" th:href="@{${uri}(character.getKey() = ${character.getValue()})}">
+                    <li th:each="value : ${characters.get(key)}">
+                        <a th:if="${url.toString.contains(${key} + '=' + ${value})}"
+                           th:href="@{${url.toString().replace(key +'='+ value, '')}}">
+                            <input type="checkbox" checked>
+                        </a>
+                        <a th:unless="${url.toString().contains(${key} + '=' + ${value})}"
+                           th:href="@{${url}(${key} = ${value})}">
+                            <input type="checkbox">
+                        </a>
                         <p th:text="${value}"/>
                     </li>
                 </ul>
@@ -28,9 +35,8 @@
                 <li th:each="good : ${goodsList}">
                     <div class="row">
                         <div class="col-sm-4">
-                            <a th:href="@{/catalog/{categoryId}/${good.getId()}(categoryId = ${good.getId()})}" th:src="${good.photos.get(0)}"></a>
+                            <a th:href="@{/catalog}" th:src="${good.photos.get(0)}"></a>
                         </div>
-                        ${good.getCategory().getName()}
                         <div class="col-cs-8">
                             <a class="text-start align-self-center" th:href="@{/catalog}" th:text="${good.name}"/>
                             <a class="text-end align-self-center" th:href="@{/catalog}" th:text="${good.price}"/>

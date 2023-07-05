@@ -1,19 +1,15 @@
 package by.tms.onlinerclone.controller;
 
 import by.tms.onlinerclone.entity.Good;
-import by.tms.onlinerclone.entity.GoodCharacters;
 import by.tms.onlinerclone.service.GoodService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +27,11 @@ public class CatalogController {
                            @RequestParam(defaultValue = "10") @Min(1) @Max(50) int size,
                            HttpServletRequest request){
 
-        model.addAttribute("uri", request.getRequestURI());
+        StringBuffer requestURL = request.getRequestURL();
+        if (request.getQueryString() != null){
+            requestURL.append("?").append(request.getQueryString());
+        }
+        model.addAttribute("url", requestURL);
         Map<String, String[]> parameterMap = request.getParameterMap();
 
         Map<String, List<String>> charactersToSelect = goodService.findCharactersToSelect(categoryId);

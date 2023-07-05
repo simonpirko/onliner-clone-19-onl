@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+<body>
+<th:block th:include="header.html"/>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <div th:each="key : ${characters.keySet()}">
+                <h3 th:text="${key}"/>
+                <ul>
+                    <li th:each="value : ${characters.get(key)}">
+                        <a th:if="${url.toString.contains(${key} + '=' + ${value})}"
+                           th:href="@{${url.toString().replace(key +'='+ value, '')}}">
+                            <input type="checkbox" checked>
+                        </a>
+                        <a th:unless="${url.toString().contains(${key} + '=' + ${value})}"
+                           th:href="@{${url}(${key} = ${value})}">
+                            <input type="checkbox">
+                        </a>
+                        <p th:text="${value}"/>
+                    </li>
+                </ul>
+                <br>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <ul>
+                <li th:each="good : ${goodsList}">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <a th:href="@{/catalog}" th:src="${good.photos.get(0)}"></a>
+                        </div>
+                        <div class="col-cs-8">
+                            <a class="text-start align-self-center" th:href="@{/catalog}" th:text="${good.name}"/>
+                            <a class="text-end align-self-center" th:href="@{/catalog}" th:text="${good.price}"/>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"></script>
+</body>
+</html>

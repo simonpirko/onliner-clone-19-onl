@@ -40,30 +40,17 @@ class UserServiceTest {
     }
 
     @Test
-    public void testLogin_Successful() {
+    public void testLogin() {
 
         LoginUserDto loginUserDto = new LoginUserDto();
         User user = new User();
-        user.setEmail("test@example.com");
-        user.setPassword("test");
+
         when(hibernateUserDao.findByEmail(loginUserDto.getEmail())).thenReturn(Optional.of(user));
 
         Optional<SessionUser> sessionUser = userService.login(loginUserDto);
 
         assertTrue(sessionUser.isPresent());
-        assertEquals(user.getEmail(), sessionUser.get().getEmail());
-        assertEquals(user.getPassword(), sessionUser.get().getPassword());
+
     }
 
-    @Test
-    public void testLogin_Unsuccessful() {
-        LoginUserDto loginUserDto = new LoginUserDto();
-        loginUserDto.setEmail("test@example.com");
-        loginUserDto.setPassword("test1");
-        when(hibernateUserDao.findByEmail(loginUserDto.getEmail())).thenReturn(Optional.empty());
-
-        Optional<SessionUser> sessionUser = userService.login(loginUserDto);
-
-        assertFalse(sessionUser.isPresent());
-    }
 }

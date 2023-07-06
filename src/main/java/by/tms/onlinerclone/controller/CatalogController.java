@@ -49,7 +49,7 @@ public class CatalogController {
         model.addAttribute("countOfPages", pageableGoods.getCountOfPages());
         model.addAttribute("page", page);
 
-        return "catalog-category-searcher";
+        return "category-searcher";
     }
 
     @GetMapping("/search")
@@ -68,7 +68,7 @@ public class CatalogController {
         model.addAttribute("countOfPages", pageableGoods.getCountOfPages());
         model.addAttribute("page", page);
 
-        return "catalog-searcher";
+        return "name-searcher";
     }
 
     private String getCurrentUrl(HttpServletRequest request){

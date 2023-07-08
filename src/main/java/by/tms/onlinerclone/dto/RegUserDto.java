@@ -18,7 +18,6 @@ public class RegUserDto {
     @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "The email field does not contain a valid email address")
     private String email;
 
-    @Pattern(regexp = "^[\\w\\s\\d,#-]+$", message = "The address is not valid")
     private Address address;
 
     @Pattern(regexp = "^\\+(?:[0-9] ?){6,14}[0-9]$", message = "The phone number is not valid")

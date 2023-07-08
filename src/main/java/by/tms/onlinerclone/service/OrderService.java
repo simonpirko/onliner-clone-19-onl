@@ -29,18 +29,6 @@ public class OrderService {
         return Optional.empty();
     }
 
-    public boolean addGood(long id, Good good){
-
-        Order byId = hibernateOrderDao.findById(id);
-
-        if(byId != null){
-
-            byId.getGoods().add(good);
-            hibernateOrderDao.update(byId);
-            return true;
-        }
-        return false;
-    }
 
     public void delete(Order order){
         hibernateOrderDao.delete(order);

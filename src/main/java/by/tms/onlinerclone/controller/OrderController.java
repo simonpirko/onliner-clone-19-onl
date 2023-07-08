@@ -1,16 +1,16 @@
 package by.tms.onlinerclone.controller;
 
-import by.tms.onlinerclone.entity.Good;
 import by.tms.onlinerclone.entity.Order;
 import by.tms.onlinerclone.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@Controller
 @RequestMapping("/order")
 public class OrderController {
 
@@ -18,50 +18,42 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
+    public String createOrder(@ModelAttribute Order order) {
         orderService.save(order);
-        return ResponseEntity.ok(order);
+        return "redirect:/order";
     }
 
-    @GetMapping("/order")
-    public ResponseEntity<List<Order>> findByUser(@PathVariable long id) {
+    @GetMapping
+    public String findByUser(@PathVariable long id, Model model) {
         List<Order> orderList = orderService.findByUser(id);
-        return ResponseEntity.ok(orderList);
+        model.addAttribute("orders", orderList);
+        return "orderList";
     }
 
 
-    @GetMapping("/order/{orderId}")
-    public ResponseEntity<Order> findById(@PathVariable long orderId) {
+    @GetMapping("/{orderId}")
+    public String findById(@PathVariable long orderId, Model model) {
         Optional<Order> byId = orderService.findById(orderId);
         if (byId.isPresent()) {
             Order order = byId.get();
-            return ResponseEntity.ok(order);
+            model.addAttribute("order", order);
+            return "/order";
         }
-        return ResponseEntity.notFound().build();
+        model.addAttribute("orderNotFound", "Order not found!");
+        return "orderNotFound";
     }
-
-    @PutMapping("/{orderId}")
-    public ResponseEntity<Boolean> addGood(@PathVariable("orderId") long orderId, @RequestBody Good good) {
-        boolean addedGood = orderService.addGood(orderId, good);
-        if (addedGood) {
-            return ResponseEntity.ok(addedGood);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
 
     @DeleteMapping("/{orderId}")
-    public ResponseEntity<Void> deleteOrder(@PathVariable("orderId") long orderId) {
+    public String deleteOrder(@PathVariable long orderId, Model model) {
         Optional<Order> order = orderService.findById(orderId);
         if (order.isPresent()) {
             Order existingOrder = order.get();
             orderService.delete(existingOrder);
-            return ResponseEntity.ok().build();
+            return "/order";
         } else {
-            return ResponseEntity.notFound().build();
+            model.addAttribute("deleteError", "An error occurred while deleting the order!");
+            return "deleteError";
         }
     }
-
 
 }

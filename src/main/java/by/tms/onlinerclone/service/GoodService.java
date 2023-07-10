@@ -3,9 +3,11 @@ package by.tms.onlinerclone.service;
 import by.tms.onlinerclone.dao.HibernateGoodDAO;
 import by.tms.onlinerclone.entity.Good;
 import by.tms.onlinerclone.entity.GoodCharacters;
+import by.tms.onlinerclone.entity.PageableGoods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.util.*;
 
 /**
@@ -46,21 +48,29 @@ public class GoodService {
         return hibernateGoodDAO.findAll();
     }
 
-    public List<Good> findByCategoryId(long id) {
-        return hibernateGoodDAO.findByCategoryId(id);
-    }
+    public PageableGoods findBySimilarityInName(String name, int page, int size) {
 
-    public List<Good> findByCategoryIdPaginated(long id, int page, int size){
         int offset = paginate(page, size);
-        return hibernateGoodDAO.findByCategoryIdPaginated(id, size, offset);
+        return hibernateGoodDAO.findBySimilarityInName(name, offset, size);
     }
 
-    public Map<String, List<String>> findCharactersToSelect(long categoryId) {
+    public List<Good> findByCategoryName(String name) {
+        return hibernateGoodDAO.findByCategoryName(name);
+    }
+
+    public PageableGoods findByCategoryNamePaginated(String name, int page, int size){
+
+        int offset = paginate(page, size);
+        return hibernateGoodDAO.findByCategoryNamePaginated(name, offset, size);
+
+    }
+
+    public Map<String, List<String>> findCharactersToSelect(String categoryName) {
 
         Set<String> ch = new HashSet<>();
         Map<String, List<String>> characters = new HashMap<>();
 
-        List<Good> byCategoryId = hibernateGoodDAO.findByCategoryId(categoryId);
+        List<Good> byCategoryId = hibernateGoodDAO.findByCategoryName(categoryName);
 
         for (Good good : byCategoryId) {
             for (GoodCharacters character : good.getCharacters()) {
@@ -75,11 +85,14 @@ public class GoodService {
         return characters;
     }
 
-    public List<Good> findByCategoryIdAndByParameters(long id, int page, int size, Map<String, String[]> parameters){
+    public PageableGoods findByCategoryNameAndByParameters(String name, int page, int size, Map<String, String[]> parameters){
         int offset = paginate(page, size);
-        return hibernateGoodDAO.findByCategoryIdAndByParameters(id, offset, size, parameters);
+        return hibernateGoodDAO.findByCategoryNameAndByParameters(name, offset, size, parameters);
     }
 
+    public int getCountOfPages(List<Good> goodList, int size){
+        return (int) Math.ceil(goodList.size() / size);
+    }
     private int paginate(int page, int size){
         if(page == 1){
             return page * size;

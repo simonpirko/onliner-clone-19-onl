@@ -2,6 +2,7 @@ package by.tms.onlinerclone.dao;
 
 import by.tms.onlinerclone.entity.Good;
 import by.tms.onlinerclone.entity.GoodCharacters;
+import by.tms.onlinerclone.entity.PageableGoods;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -38,7 +39,7 @@ public class HibernateGoodDAO {
         currentSession.update(good);
     }
 
-    @Transactional()
+    @Transactional(readOnly = true)
     public Good findById(long id) {
         Session currentSession = sessionFactory.getCurrentSession();
         return currentSession.get(Good.class, id);
@@ -50,34 +51,60 @@ public class HibernateGoodDAO {
         Query<Good> query =
                 currentSession.createQuery("from Good where name = :un order by id desc", Good.class);
         query.setParameter("un", name);
-        Good singleResult = query.getSingleResult();
-        return singleResult;
+        return query.getSingleResult();
     }
 
+    @Transactional(readOnly = true)
     public List<Good> findAll() {
         Session currentSession = sessionFactory.getCurrentSession();
         Query<Good> query = currentSession.createQuery("from Good", Good.class);
-        List<Good> resultList = query.getResultList();
-        return resultList;
+        return query.getResultList();
     }
     @Transactional(readOnly = true)
-    public List<Good> findByCategoryId(long categoryId) {
+    public List<Good> findByCategoryName(String categoryName) {
         Session currentSession = sessionFactory.getCurrentSession();
         Query<Good> query =
-                currentSession.createQuery("from Good where category_id =:id", Good.class);
-        query.setParameter("id", categoryId);
+                currentSession.createQuery("from Good g where  g.category.name =: categoryName", Good.class);
+        query.setParameter("categoryName", categoryName);
         return query.getResultList();
     }
 
     @Transactional(readOnly = true)
-    public List<Good> findByCategoryIdPaginated(long categoryId, int offset, int limit) {
+    public PageableGoods findBySimilarityInName(String name, int offset, int size) {
+        Session currentSession = sessionFactory.getCurrentSession();
+        CriteriaBuilder cb = currentSession.getCriteriaBuilder();
+
+        CriteriaQuery<Good> cq = cb.createQuery(Good.class);
+        CriteriaQuery<Long> countCQ = cb.createQuery(Long.class);
+        Root<Good> from = cq.from(Good.class);
+
+        cq.select(from).where(cb.like(from.get("name"), name));
+        countCQ.select(cb.count(from)).where(cb.like(from.get("name"), name));
+
+        Query<Good> query = currentSession.createQuery(cq);
+        query.setFirstResult(offset);
+        query.setMaxResults(size);
+        List<Good> resultList = query.getResultList();
+
+        Query<Long> countQuery = currentSession.createQuery(countCQ);
+        Long countGoods = countQuery.getSingleResult();
+
+        return createPageableGoods(resultList, size, countGoods);
+
+    }
+
+    @Transactional(readOnly = true)
+    public PageableGoods findByCategoryNamePaginated(String categoryName, int offset, int size) {
         Session currentSession = sessionFactory.getCurrentSession();
         Query<Good> query =
-                currentSession.createQuery("from Good where category_id =:id", Good.class);
-        query.setParameter("id", categoryId);
+                currentSession.createQuery("from Good g where g.category.name =: categoryName", Good.class);
+        query.setParameter("categoryName", categoryName);
         query.setFirstResult(offset);
-        query.setMaxResults(limit);
-        return query.getResultList();
+        query.setMaxResults(size);
+        List<Good> resultList = query.getResultList();
+        Query<Long> countQuery = currentSession.createQuery("select count (g) from Good g where g.category.name =: categoryName", Long.class);
+        Long countGoods = countQuery.getSingleResult();
+        return createPageableGoods(resultList, size, countGoods);
     }
 
     @Transactional(readOnly = true)
@@ -85,25 +112,24 @@ public class HibernateGoodDAO {
 
         Set<String> values = new HashSet<>();
         Session currentSession = sessionFactory.getCurrentSession();
-
         Query<String> query = currentSession.createQuery("select gc.value from GoodCharacters gc where gc.name =: name", String.class);
         query.setParameter("name", characterName);
         return query.getResultList();
     }
 
     @Transactional(readOnly = true)
-    public List<Good> findByCategoryIdAndByParameters(long categoryId, int offset, int limit, Map<String, String[]> parameters){
+    public PageableGoods findByCategoryNameAndByParameters(String categoryName, int offset, int size, Map<String, String[]> parameters){
 
         Session currentSession = sessionFactory.getCurrentSession();
         CriteriaBuilder cb = currentSession.getCriteriaBuilder();
 
-
         CriteriaQuery<Good> cq = cb.createQuery(Good.class);
+        CriteriaQuery<Long> countCQ = cb.createQuery(Long.class);
         Root<Good> good = cq.from(Good.class);
         Join<Good, GoodCharacters> goodCharacters = good.join("goodcharacters");
 
         List<Predicate> predicateList = new ArrayList<>();
-        predicateList.add(cb.equal(good.get("category_id"), categoryId));
+        predicateList.add(cb.equal(goodCharacters.get("categoryName"), categoryName));
 
         for (Map.Entry<String, String[]> entry : parameters.entrySet()) {
 
@@ -117,9 +143,25 @@ public class HibernateGoodDAO {
 
         Predicate[] predicates = predicateList.toArray(new Predicate[predicateList.size()]);
         cq.select(good).where(predicates);
+        countCQ.select(cb.count(good)).where(predicates);
+
         Query<Good> query = currentSession.createQuery(cq);
         query.setFirstResult(offset);
-        query.setMaxResults(limit);
-        return query.getResultList();
+        query.setMaxResults(size);
+        List<Good> resultList = query.getResultList();
+        Query<Long> countQuery = currentSession.createQuery(countCQ);
+        Long countGoods = countQuery.getSingleResult();
+
+        return createPageableGoods(resultList, size, countGoods);
+    }
+
+    private PageableGoods createPageableGoods(List<Good> goodList, int size, Long countGoods){
+        PageableGoods pageableGoods = new PageableGoods();
+        pageableGoods.setSize(size);
+        pageableGoods.setGoodList(goodList);
+
+        Long countOfPages = (long) Math.ceil(countGoods / size);
+        pageableGoods.setCountOfPages(countOfPages);
+        return pageableGoods;
     }
 }

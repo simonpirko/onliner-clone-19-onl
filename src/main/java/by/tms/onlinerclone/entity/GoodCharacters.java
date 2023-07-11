@@ -1,6 +1,8 @@
 package by.tms.onlinerclone.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.Entity;
@@ -10,7 +12,8 @@ import javax.persistence.Id;
 
 @Entity
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class GoodCharacters {
 
     @Id

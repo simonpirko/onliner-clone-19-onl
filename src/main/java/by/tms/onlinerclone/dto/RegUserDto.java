@@ -1,5 +1,6 @@
 package by.tms.onlinerclone.dto;
 
+import by.tms.onlinerclone.entity.Address;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,8 +1,11 @@
 package by.tms.onlinerclone.service;
 
 import by.tms.onlinerclone.dao.HibernateUserDao;
+import by.tms.onlinerclone.dto.LoginUserDto;
+import by.tms.onlinerclone.dto.RegUserDto;
 import by.tms.onlinerclone.entity.SessionUser;
 import by.tms.onlinerclone.entity.User;
+import by.tms.onlinerclone.mapper.RegUserDTOMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -32,7 +35,7 @@ class UserServiceTest {
     public void testSave() {
         RegUserDto regUserDto = new RegUserDto();
         User user = new User();
-        when(RegUserDTOMapper.RegUserToUser(regUserDto)).thenReturn(user);
+        when(RegUserDTOMapper.regUserToUser(regUserDto)).thenReturn(user);
 
         userService.save(regUserDto);
 

@@ -1,8 +1,11 @@
 package by.tms.onlinerclone.service;
 
 import by.tms.onlinerclone.dao.HibernateUserDao;
+import by.tms.onlinerclone.dto.LoginUserDto;
+import by.tms.onlinerclone.dto.RegUserDto;
 import by.tms.onlinerclone.entity.SessionUser;
 import by.tms.onlinerclone.entity.User;
+import by.tms.onlinerclone.mapper.RegUserDTOMapper;
 import by.tms.onlinerclone.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +19,7 @@ public class UserService {
     private HibernateUserDao hibernateUserDao;
 
     public void save(RegUserDto regUserDto) {
-        User user = RegUserDTOMapper.RegUserToUser(regUserDto);
+        User user = RegUserDTOMapper.regUserToUser(regUserDto);
         hibernateUserDao.save(user);
     }
 

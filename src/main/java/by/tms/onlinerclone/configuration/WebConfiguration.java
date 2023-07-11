@@ -1,6 +1,7 @@
 package by.tms.onlinerclone.configuration;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -13,6 +14,7 @@ import org.thymeleaf.templatemode.TemplateMode;
  */
 @Configuration
 @EnableWebMvc
+@ComponentScan("by.tms.onlinerclone")
 public class WebConfiguration {
   @Bean
   public SpringResourceTemplateResolver templateResolver(){

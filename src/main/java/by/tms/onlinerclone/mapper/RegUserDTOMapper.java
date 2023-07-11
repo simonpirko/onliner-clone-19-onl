@@ -1,9 +1,10 @@
 package by.tms.onlinerclone.mapper;
 
 import by.tms.onlinerclone.dto.RegUserDto;
+import by.tms.onlinerclone.entity.User;
 
 public class RegUserDTOMapper {
-    public static User RegUserToUser(RegUserDto regUserDto){
+    public static User regUserToUser(RegUserDto regUserDto){
         User user = new User();
         user.setName(regUserDto.getName());
         user.setUsername(regUserDto.getUsername());

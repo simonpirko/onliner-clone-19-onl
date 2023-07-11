@@ -1,5 +1,9 @@
 package by.tms.onlinerclone.controller;
 
+import by.tms.onlinerclone.dto.LoginUserDto;
+import by.tms.onlinerclone.dto.RegUserDto;
+import by.tms.onlinerclone.entity.SessionUser;
+import by.tms.onlinerclone.service.UserService;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Optional;
 

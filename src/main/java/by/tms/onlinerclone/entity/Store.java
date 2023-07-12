@@ -19,6 +19,7 @@ public class Store {
     @OneToOne(cascade = CascadeType.ALL)
     private User user;
 
+    @Column(unique = true)
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL)

@@ -10,104 +10,54 @@
 <div th:insert="header :: header"></div>
 
 <br>
-<h2>Most trending now:</h2>
 
-<div id="carouselExampleControls" class="carousel carousel-dark slide" data-bs-ride="carousel" style="width: 100%">
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <div class="card-group">
-                <div class="card">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-                            additional content. This content is a little bit longer.</p>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+<div class="text-center p4">
+    <h1 class="display-5">Most trending now:</h1>
+
+    <div id="carouselExampleControls" class="carousel carousel-dark slide" data-bs-ride="carousel" style="width: 100%">
+        <div class="carousel-inner">
+            <th:block th:with="partitions=${T(org.apache.commons.collections4.ListUtils).partition(topGoods, 3)}">
+                <div class="carousel-item active" th:each="partition: ${partitions}">
+                    <div class="card-group">
+                        <div class="card" th:each="good: ${partition}">
+                            <img src="..." class="card-img-top" alt="...">
+                            <!--                        <img th:src="@{/img/values.png}" alt="Media Resource"/>-->
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${good.name}">Card title</h5>
+                                <!--                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to-->
+                                <!--                                additional content. This content is a little bit longer.</p>-->
+                                <!--                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>-->
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="card">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This card has supporting text below as a natural lead-in to additional
-                            content.</p>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-                            additional content. This card has even longer content than the first to show that equal
-                            height action.</p>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                    </div>
-                </div>
-            </div>
+            </th:block>
         </div>
-        <div class="carousel-item">
-            <div class="card-group">
-                <div class="card">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-                            additional content. This content is a little bit longer.</p>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This card has supporting text below as a natural lead-in to additional
-                            content.</p>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-                            additional content. This card has even longer content than the first to show that equal
-                            height
-                            action.</p>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+                data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+                data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
 </div>
 
-<br>
-<h2>Categories:</h2>
-<br>
-<div class="container align-items-center">
-    <div class="row align-items-center">
-        <a class="col" href="#">Category</a>
-        <a class="col" href="#">Category</a>
-        <a class="col" href="#">Category</a>
-    </div>
-    <div class="row align-items-center">
-        <a class="col" href="#">Category</a>
-        <a class="col" href="#">Category</a>
-        <a class="col" href="#">Category</a>
-    </div>
-    <div class="row align-items-center">
-        <a class="col" href="#">Category</a>
-        <a class="col" href="#">Category</a>
-        <a class="col" href="#">Category</a>
+<div class="text-center p4">
+    <br>
+    <h1 class="display-5">Categories:</h1>
+    <div class="container align-items-center">
+        <th:block th:with="partitions=${T(org.apache.commons.collections4.ListUtils).partition(categories, 3)}">
+            <div class="row align-items-center" th:each="partition: ${partitions}">
+                <div class="col" th:each="category: ${partition}">
+                    <a class="link-opacity-100 link-offset-2 link-underline-opacity-0 link-dark" href="#"
+                       th:text="${category.name}">Category</a>
+                </div>
+            </div>
+        </th:block>
     </div>
 </div>
 

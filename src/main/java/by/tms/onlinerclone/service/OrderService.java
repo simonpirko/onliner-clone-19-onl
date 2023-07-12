@@ -19,6 +19,11 @@ public class OrderService {
         hibernateOrderDao.save(order);
     }
 
+    public List<Order> findPaginatedByUsername(String username, int page, int size) {
+        int offset = (page - 1) * size;
+        return hibernateOrderDao.findPaginatedByUsername(username, offset, size);
+    }
+
     public List<Order> findByUser(long id){
         return hibernateOrderDao.findByUserId(id);
     }

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,12 +22,15 @@ public class OrderController {
     @PostMapping
     public String createOrder(@ModelAttribute Order order) {
         orderService.save(order);
-        return "redirect:/order";
+        return "/order";
     }
 
-    @GetMapping
-    public String findByUser(@PathVariable long id, Model model) {
-        List<Order> orderList = orderService.findByUser(id);
+    @GetMapping("/{username}")
+    public String findByUser(@PathVariable String username,
+                             Model model,
+                             @RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = "5") @Min(1) @Max(10) int size) {
+        List<Order> orderList = orderService.findPaginatedByUsername(username, page, size);
         model.addAttribute("orders", orderList);
         return "orderList";
     }
@@ -39,20 +44,20 @@ public class OrderController {
             model.addAttribute("order", order);
             return "/order";
         }
-        model.addAttribute("orderNotFound", "Order not found!");
+        model.addAttribute("orderNotFound");
         return "orderNotFound";
     }
 
+
     @DeleteMapping("/{orderId}")
-    public String deleteOrder(@PathVariable long orderId, Model model) {
+    public String deleteOrder(@PathVariable long orderId) {
         Optional<Order> order = orderService.findById(orderId);
         if (order.isPresent()) {
             Order existingOrder = order.get();
             orderService.delete(existingOrder);
-            return "/order";
+            return "orderList";
         } else {
-            model.addAttribute("deleteError", "An error occurred while deleting the order!");
-            return "deleteError";
+            return "orderNotFound";
         }
     }
 

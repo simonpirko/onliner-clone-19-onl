@@ -3,7 +3,7 @@ package by.tms.onlinerclone.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -19,7 +19,9 @@ public class Good {
 
     private String name;
 
-    private Double price;
+    private String description;
+
+    private BigDecimal price;
 
     @ManyToOne(cascade = CascadeType.ALL)
     private GoodCategory category;

@@ -7,12 +7,10 @@
           integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
 <body>
-<th:block th:include="header.html"/>
-
-<div class="container">
+<div class="container mt-3">
     <div class="row">
         <div class="col-sm-4">
-            <div th:each="key : ${characters.keySet()}">
+            <div th:if="${!characters.isEmpty()}" th:each="key : ${characters.keySet()}">
                 <h3 th:text="${key}"/>
                 <ul>
                     <li th:each="value : ${characters.get(key)}">
@@ -47,8 +45,8 @@
         </div>
     </div>
     <div class="container">
-        <div class="row justify-content-center">
-            <ul class="pagination">
+        <div class="row">
+            <ul class="pagination justify-content-center">
                 <th:block>
                     <li th:if="${page == 1}" class="page-item disable">
                         <a class="page-link" th:href="@{${url}(page = 1)}"

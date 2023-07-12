@@ -90,9 +90,6 @@ public class GoodService {
         return hibernateGoodDAO.findByCategoryNameAndByParameters(name, offset, size, parameters);
     }
 
-    public int getCountOfPages(List<Good> goodList, int size){
-        return (int) Math.ceil(goodList.size() / size);
-    }
     private int paginate(int page, int size){
         if(page == 1){
             return page * size;

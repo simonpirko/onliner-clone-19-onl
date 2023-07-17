@@ -25,7 +25,7 @@ public class HibernateConfiguration {
         basicDataSource.setDriverClassName("org.postgresql.Driver");
         basicDataSource.setUrl("jdbc:postgresql://localhost:5432/postgres");
         basicDataSource.setUsername("postgres");
-        basicDataSource.setPassword("postgres");
+        basicDataSource.setPassword("root");
         return basicDataSource;
     }
 

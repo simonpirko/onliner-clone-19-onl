@@ -2,6 +2,7 @@ package by.tms.onlinerclone.dao;
 
 import by.tms.onlinerclone.entity.Good;
 import by.tms.onlinerclone.entity.GoodCharacters;
+import by.tms.onlinerclone.entity.Order;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -120,6 +121,24 @@ public class HibernateGoodDAO {
         Query<Good> query = currentSession.createQuery(cq);
         query.setFirstResult(offset);
         query.setMaxResults(limit);
+        return query.getResultList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Good> getTopGoods(){
+
+        Session currentSession = sessionFactory.getCurrentSession();
+        CriteriaBuilder criteriaBuilder = currentSession.getCriteriaBuilder();
+
+
+        CriteriaQuery<Good> criteriaQuery = criteriaBuilder.createQuery(Good.class);
+        Root<Good> good = criteriaQuery.from(Good.class);
+        Join<Good, Order> orderGoods = good.join("orders_good");
+        criteriaQuery.groupBy(orderGoods.get("goods_id"));
+        criteriaQuery.orderBy(criteriaBuilder.desc(criteriaBuilder.count(orderGoods.get("goods_id"))));
+
+        Query<Good> query = currentSession.createQuery(criteriaQuery);
+        query.setMaxResults(9);
         return query.getResultList();
     }
 }

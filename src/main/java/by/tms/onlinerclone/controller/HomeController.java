@@ -29,9 +29,10 @@ public class HomeController {
     @GetMapping
     public String showHomePage(Model model){
         List<GoodCategory> allCategories = goodCategoryService.findAll();
-        //List<GoodService> mostTrendingOffers =
+        List<Good> mostTrendingOffers = goodService.getMostTrendingGoods();
 
         model.addAttribute("categories", allCategories);
+        model.addAttribute("topGoods", mostTrendingOffers);
 
         return "home";
     }

@@ -87,4 +87,8 @@ public class GoodService {
             return  (page - 1) * size;
         }
     }
+
+    public List<Good> getMostTrendingGoods(){
+        return  hibernateGoodDAO.getTopGoods();
+    }
 }

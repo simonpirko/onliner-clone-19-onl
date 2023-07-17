@@ -22,10 +22,10 @@ public class OrderController {
     @PostMapping
     public String createOrder(@ModelAttribute Order order) {
         orderService.save(order);
-        return "/order";
+        return "order";
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/user/{username}")
     public String findByUser(@PathVariable String username,
                              Model model,
                              @RequestParam(defaultValue = "1") int page,
@@ -42,14 +42,14 @@ public class OrderController {
         if (byId.isPresent()) {
             Order order = byId.get();
             model.addAttribute("order", order);
-            return "/order";
+            return "order";
         }
         model.addAttribute("orderNotFound");
         return "orderNotFound";
     }
 
 
-    @DeleteMapping("/{orderId}")
+    @PostMapping("/{orderId}")
     public String deleteOrder(@PathVariable long orderId) {
         Optional<Order> order = orderService.findById(orderId);
         if (order.isPresent()) {

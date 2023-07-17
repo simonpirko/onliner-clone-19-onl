@@ -27,13 +27,23 @@ public class HibernateOrderDao {
         currentSession.update(order);
     }
 
-    @Transactional(readOnly = true)
+
     public Order findById(long id){
         Session currentSession = sessionFactory.getCurrentSession();
         return currentSession.get(Order.class, id);
     }
 
-    @Transactional(readOnly = true)
+
+    public List<Order> findPaginatedByUsername(String username, int offset, int size) {
+        Session currentSession = sessionFactory.getCurrentSession();
+        Query<Order> query = currentSession.createQuery("FROM Order o WHERE o.user.username = :username", Order.class);
+        query.setParameter("username", username);
+        query.setFirstResult(offset);
+        query.setMaxResults(size);
+        return query.getResultList();
+    }
+
+
     public List<Order> findByUserId(long id){
         Session currentSession = sessionFactory.getCurrentSession();
         Query<Order> query = currentSession.createQuery("from Order where user_id = :id", Order.class);

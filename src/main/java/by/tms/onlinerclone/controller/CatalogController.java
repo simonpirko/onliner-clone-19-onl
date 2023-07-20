@@ -1,6 +1,8 @@
 package by.tms.onlinerclone.controller;
 
+import by.tms.onlinerclone.dto.PageableGoodsShowerDto;
 import by.tms.onlinerclone.entity.PageableGoods;
+import by.tms.onlinerclone.mapper.PageableGoodsMapper;
 import by.tms.onlinerclone.service.GoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,8 +47,10 @@ public class CatalogController {
             pageableGoods = goodService.findByCategoryNameAndByParameters(categoryName, page, size, parameterMap);
         }
 
-        model.addAttribute("goodList", pageableGoods.getGoodList());
-        model.addAttribute("countOfPages", pageableGoods.getCountOfPages());
+        PageableGoodsShowerDto pageableGoodsShowerDto = PageableGoodsMapper.pageableGoodsToPageableGoodsShowDto(pageableGoods);
+
+        model.addAttribute("goodList", pageableGoodsShowerDto.getGoodList());
+        model.addAttribute("countOfPages", pageableGoodsShowerDto.getCountOfPages());
         model.addAttribute("page", page);
 
         return "category-searcher";
@@ -64,8 +68,10 @@ public class CatalogController {
         model.addAttribute("url", currentUrl);
 
         PageableGoods pageableGoods = goodService.findBySimilarityInName(offerName, page, size);
-        model.addAttribute("goodList", pageableGoods.getGoodList());
-        model.addAttribute("countOfPages", pageableGoods.getCountOfPages());
+
+        PageableGoodsShowerDto pageableGoodsShowerDto = PageableGoodsMapper.pageableGoodsToPageableGoodsShowDto(pageableGoods);
+        model.addAttribute("goodList", pageableGoodsShowerDto.getGoodList());
+        model.addAttribute("countOfPages", pageableGoodsShowerDto.getCountOfPages());
         model.addAttribute("page", page);
 
         return "name-searcher";

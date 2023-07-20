@@ -14,7 +14,9 @@
                 <li th:each="good : ${goodList}">
                     <div class="row">
                         <div class="col-sm-4">
-                            <a th:href="@{/catalog}" th:src="${good.photos.get(0)}"></a>
+                            <a th:href="@{/catalog}" style="">
+                                <img th:src="@{'data:image/jpg;base64, '+${good.photosBase64.get(0)}}" style="max-width: 240px; max-height: 240px">
+                            </a>
                         </div>
                         <div class="col-cs-8">
                             <a class="text-start align-self-center" th:href="@{/catalog}" th:text="${good.name}"></a>

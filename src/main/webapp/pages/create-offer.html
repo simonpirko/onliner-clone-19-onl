@@ -8,26 +8,70 @@
 </head>
 <body>
 <div class="container mt-3">
-    <div class="row text-center">
-        <form method="post" th:enctype="multipart/form-data" th:action="@{/store/${storeName}/create-offer}" th:object="${newOffer}">
+    <div class="row text-center justify-content-center">
+        <form method="post" enctype="multipart/form-data" th:action="@{/store/${storeName}/create-offer}"
+              th:object="${newOffer}">
 
-            <input type="text" th:field="*{name}" placeholder="Name">
-            <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+            <div class="row justify-content-center mb-3">
+                <div class="col-auto">
+                    <label for="GoodName" class="form-label">Good Name</label>
+                </div>
+                <div class="col-auto">
+                    <input class="form-control col-auto" id="GoodName" type="text" th:field="*{name}">
+                    <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+                </div>
+            </div>
 
-            <input type="text" th:field="*{description}" placeholder="Description">
-            <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></p>
+            <div class="row justify-content-center mb-3">
+                <div class="col-auto">
+                    <label for="GoodDescription" class="form-label">Description</label>
+                </div>
+                <div class="col-auto">
+                    <input class="form-control col-auto" id="GoodDescription" type="text" th:field="*{description}">
+                    <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></p>
+                </div>
+            </div>
 
-            <input type="text" th:field="*{price}" placeholder="Price">
-            <p th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></p>
+            <div class="row justify-content-center mb-3">
+                <div class="col-auto">
+                    <label for="GoodPrice" class="form-label">Price</label>
+                </div>
+                <div class="col-auto">
+                    <input class="form-control col-auto" id="GoodPrice" type="text" th:field="*{price}">
+                    <p th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></p>
+                </div>
+            </div>
 
-            <input type="text" th:field="*{category}" placeholder="Category">
-            <p th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></p>
+            <div class="row justify-content-center mb-3">
+                <div class="col-auto">
+                    <label for="GoodCategory" class="form-label">Category</label>
+                </div>
+                <div class="col-auto">
+                    <input class="form-control col-auto" id="GoodCategory" type="text" th:field="*{category}">
+                    <p th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></p>
+                </div>
+            </div>
 
-            <input type="text" th:field="*{characters}" placeholder="Characters">
-            <p th:if="${#fields.hasErrors('characters')}" th:errors="*{characters}"></p>
+            <div class="row g-0 justify-content-center mb-3" th:each="character, itemStat : *{characters}">
+                <div class="col-2">
+                    <label for="CharacterName" class="form-label">Character</label>
+                    <input id="CharacterName" th:field="*{characters[__${itemStat.index}__].name}"/>
+                </div>
+                <div class="col-2">
+                    <label for="CharacterValue" class="form-label">Value</label>
+                    <input id="CharacterValue" th:field="*{characters[__${itemStat.index}__].value}"/>
+                </div>
+            </div>
 
-            <input type="file" th:field="*{photos}" placeholder="Photo" >
-            <p th:if="${#fields.hasErrors('photos')}" th:errors="*{photos}"></p>
+            <div class="row justify-content-center mb-3">
+                <div class="col-auto">
+                    <label for="GoodPhotos" class="form-label">Photos</label>
+                </div>
+                <div class="col-auto">
+                    <input class="form-control col-auto" id="GoodPhotos" type="file" th:field="*{photos}" multiple>
+                    <p th:if="${#fields.hasErrors('photos')}" th:errors="*{photos}"></p>
+                </div>
+            </div>
 
             <p th:if="${createOfferError != null}" th:text="${createOfferError}"></p>
 

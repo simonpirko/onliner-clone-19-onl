@@ -1,6 +1,7 @@
 package by.tms.onlinerclone.dao;
 
 import by.tms.onlinerclone.entity.Good;
+import by.tms.onlinerclone.entity.GoodCategory;
 import by.tms.onlinerclone.entity.GoodCharacters;
 import by.tms.onlinerclone.entity.PageableGoods;
 import org.hibernate.Session;
@@ -8,7 +9,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 
 import javax.persistence.criteria.*;
@@ -18,8 +18,7 @@ import java.util.*;
  * @author Denis Smirnov on 29.06.2023
  */
 @Repository
-@Transactional
-public class HibernateGoodDAO {
+public class HibernateGoodDao {
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -39,13 +38,11 @@ public class HibernateGoodDAO {
         currentSession.update(good);
     }
 
-    @Transactional(readOnly = true)
     public Good findById(long id) {
         Session currentSession = sessionFactory.getCurrentSession();
         return currentSession.get(Good.class, id);
     }
 
-    @Transactional(readOnly = true)
     public Good findByGoodName(String name) {
         Session currentSession = sessionFactory.getCurrentSession();
         Query<Good> query =
@@ -54,13 +51,12 @@ public class HibernateGoodDAO {
         return query.getSingleResult();
     }
 
-    @Transactional(readOnly = true)
     public List<Good> findAll() {
         Session currentSession = sessionFactory.getCurrentSession();
         Query<Good> query = currentSession.createQuery("from Good", Good.class);
         return query.getResultList();
     }
-    @Transactional(readOnly = true)
+
     public List<Good> findByCategoryName(String categoryName) {
         Session currentSession = sessionFactory.getCurrentSession();
         Query<Good> query =
@@ -69,7 +65,6 @@ public class HibernateGoodDAO {
         return query.getResultList();
     }
 
-    @Transactional(readOnly = true)
     public PageableGoods findBySimilarityInName(String name, int offset, int size) {
         Session currentSession = sessionFactory.getCurrentSession();
         CriteriaBuilder cb = currentSession.getCriteriaBuilder();
@@ -93,7 +88,6 @@ public class HibernateGoodDAO {
 
     }
 
-    @Transactional(readOnly = true)
     public PageableGoods findByCategoryNamePaginated(String categoryName, int offset, int size) {
         Session currentSession = sessionFactory.getCurrentSession();
         Query<Good> query =
@@ -107,17 +101,34 @@ public class HibernateGoodDAO {
         return createPageableGoods(resultList, size, countGoods);
     }
 
-    @Transactional(readOnly = true)
     public List<String> characterValues(String characterName){
-
-        Set<String> values = new HashSet<>();
         Session currentSession = sessionFactory.getCurrentSession();
         Query<String> query = currentSession.createQuery("select gc.value from GoodCharacters gc where gc.name =: name", String.class);
         query.setParameter("name", characterName);
         return query.getResultList();
     }
 
-    @Transactional(readOnly = true)
+    public GoodCategory findCategory(String categoryName){
+        Session currentSession = sessionFactory.getCurrentSession();
+        Query<GoodCategory> query = currentSession.createQuery("from GoodCategory where name =: name", GoodCategory.class);
+        query.setParameter("name", categoryName);
+        return query.getSingleResult();
+    }
+    public Map<String, GoodCharacters> findCharacters(Set<GoodCharacters> goodCharacters){
+        Map<String, GoodCharacters> charactersMap = new HashMap<>();
+
+        Session currentSession = sessionFactory.getCurrentSession();
+
+        for (GoodCharacters goodCharacter : goodCharacters) {
+            Query<GoodCharacters> query = currentSession.createQuery("from GoodCharacters gc where gc.name =: name and gc.value =: cValue", GoodCharacters.class);
+            query.setParameter("name", goodCharacter.getName());
+            query.setParameter("cValue", goodCharacter.getValue());
+            GoodCharacters singleResult = query.getSingleResult();
+            charactersMap.put(singleResult.getName(), singleResult);
+        }
+        return charactersMap;
+    }
+
     public PageableGoods findByCategoryNameAndByParameters(String categoryName, int offset, int size, Map<String, String[]> parameters){
 
         Session currentSession = sessionFactory.getCurrentSession();
@@ -154,6 +165,7 @@ public class HibernateGoodDAO {
 
         return createPageableGoods(resultList, size, countGoods);
     }
+
 
     private PageableGoods createPageableGoods(List<Good> goodList, int size, Long countGoods){
         PageableGoods pageableGoods = new PageableGoods();

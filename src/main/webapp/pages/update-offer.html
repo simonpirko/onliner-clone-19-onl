@@ -14,7 +14,7 @@
 
     <form th:unless="${offerNotFound != null}" method="post" th:action="@{/store/${storeName}/update-offer}" th:object="${offer}">
 
-      <input class="mt-2" type="text" th:field="${offer.name}" th:value="${offer.name}" placeholder="Name" th:required="required" pattern="([A-Za-z&$#@*.,\d ]\-?)*">
+      <input class="mt-2" type="text" th:field="${offer.name}" th:value="${offer.name}" placeholder="Name" th:required="required" pattern="[A-Za-z&$#@*., -!?+=()\[\]{}<>\d]*">
       <br>
 
       <input class="mt-2" type="text" th:field="${offer.description}" th:value="${offer.description}" placeholder="Description" th:required="required" pattern="[A-Za-z&$#@*., -!?+=()\[\]{}<>\d]*">

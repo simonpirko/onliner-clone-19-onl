@@ -9,10 +9,27 @@
 <body>
 <div class="container mt-3">
     <div class="row text-center">
-        <form method="post" th:action="@{/store/create}" th:object="${newStore}">
+        <form method="post" enctype="multipart/form-data" th:action="@{/store/create}" th:object="${newStore}">
 
-            <input type="text" th:field="*{name}" placeholder="Name">
-            <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+            <div class="row justify-content-center mb-3">
+                <div class="col-auto">
+                    <label for="StoreName" class="form-label">Store Name</label>
+                </div>
+                <div class="col-auto">
+                    <input class="form-control col-auto" id="StoreName" type="text" th:field="*{name}">
+                    <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+                </div>
+            </div>
+
+            <div class="row justify-content-center mb-3">
+                <div class="col-auto">
+                    <label for="StoreLogo" class="form-label">Store Logo</label>
+                </div>
+                <div class="col-auto">
+                    <input class="form-control col-auto" id="StoreLogo" type="file" th:field="*{logo}">
+                    <p th:if="${#fields.hasErrors('logo')}" th:errors="*{logo}"></p>
+                </div>
+            </div>
 
             <p th:if="${createError != null}" th:text="${createError}"></p>
 

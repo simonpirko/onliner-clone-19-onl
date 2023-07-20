@@ -1,10 +1,13 @@
 package by.tms.onlinerclone.entity;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 public class PageableGoods {
 
     public List<Good> goodList;

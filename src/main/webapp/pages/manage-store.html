@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+<body>
+<div class="container mt-3">
+    <div class="row text-center">
+
+        <p class="mt-2" th:if="${storeNotFound != null}" th:text="${storeNotFound}"></p>
+
+        <form th:unless="${storeNotFound != null}" enctype="multipart/form-data" method="post"
+              th:action="@{/store/${storeName}/manage}" th:object="${store}">
+
+            <input class="mt-2" type="text" th:field="${store.name}" th:value="${store.name}" placeholder="Name"
+                   th:required="required" pattern="[A-Za-z&$#@*., -!?+=()\[\]{}<>\d]*">
+            <br>
+
+            <input class="mt-2" type="file" th:field="${store.logo}" th:value="${store.logo}" placeholder="Description">
+            <br>
+
+            <button class="mt-2">Update</button>
+
+        </form>
+
+        <div th:if="${isSuperAdmin}">
+            <ul>
+                <li th:each="administrator : ${store.administrators}">
+                    <form th:action="@{/store/${storeName}/manage/delete-admin}" method="post">
+                        <div class="row g-0">
+                            <div class="col-3">
+                                <h2 th:text="${administrator.name}"/>
+                            </div>
+                            <div class="col-3">
+                                <input type="hidden" name="id" th:value="${administrator.id}"/>
+                                <input type="submit" value="Delete" class="btn btn-danger"/>
+                            </div>
+                        </div>
+                    </form>
+                </li>
+            </ul>
+
+            <p th:if="${deleteError != null}" th:text="${deleteError}"></p>
+
+            <form th:action="@{/store/${storeName}/manage/add-admin}" method="post">
+
+                <input class="mt-2" type="email" name="email" placeholder="Email">
+
+                <input type="submit" value="Add" class="btn btn-primary"/>
+
+            </form>
+
+            <p th:if="${addError != null}" th:text="${addError}"></p>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"></script>
+</body>
+</html>

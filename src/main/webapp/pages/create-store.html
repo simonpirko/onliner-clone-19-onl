@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+<body>
+<div class="container mt-3">
+    <div class="row text-center">
+        <form method="post" enctype="multipart/form-data" th:action="@{/store/create}" th:object="${newStore}">
+
+            <div class="row justify-content-center mb-3">
+                <div class="col-auto">
+                    <label for="StoreName" class="form-label">Store Name</label>
+                </div>
+                <div class="col-auto">
+                    <input class="form-control col-auto" id="StoreName" type="text" th:field="*{name}">
+                    <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+                </div>
+            </div>
+
+            <div class="row justify-content-center mb-3">
+                <div class="col-auto">
+                    <label for="StoreLogo" class="form-label">Store Logo</label>
+                </div>
+                <div class="col-auto">
+                    <input class="form-control col-auto" id="StoreLogo" type="file" th:field="*{logo}">
+                    <p th:if="${#fields.hasErrors('logo')}" th:errors="*{logo}"></p>
+                </div>
+            </div>
+
+            <p th:if="${createError != null}" th:text="${createError}"></p>
+
+            <button>Create</button>
+
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"></script>
+</body>
+</html>

@@ -3,11 +3,13 @@ package by.tms.onlinerclone.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -19,13 +21,15 @@ public class Good {
 
     private String name;
 
-    private Double price;
+    private String description;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    private BigDecimal price;
+
+    @ManyToOne
     private GoodCategory category;
 
-    @OneToMany
-    private List<GoodCharacters> characters;
+    @ManyToMany
+    private Set<GoodCharacters> characters;
 
     @ElementCollection
     private List<byte[]> photos;

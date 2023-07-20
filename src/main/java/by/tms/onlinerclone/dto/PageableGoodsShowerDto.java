@@ -1,6 +1,5 @@
-package by.tms.onlinerclone.entity;
+package by.tms.onlinerclone.dto;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,9 +7,9 @@ import java.util.List;
 
 @Getter
 @Setter
-public class PageableGoods {
+public class PageableGoodsShowerDto {
 
-    public List<Good> goodList;
+    public List<GoodShowerDto> goodList;
 
     public Long countOfPages;
 

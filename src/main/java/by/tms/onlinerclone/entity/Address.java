@@ -9,7 +9,8 @@ import javax.persistence.Id;
 import javax.validation.constraints.Pattern;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

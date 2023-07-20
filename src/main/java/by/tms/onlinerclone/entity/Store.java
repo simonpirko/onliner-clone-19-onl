@@ -6,7 +6,8 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -17,10 +18,16 @@ public class Store {
     private Long id;
 
     @OneToOne(cascade = CascadeType.ALL)
-    private User user;
+    private User superAdmin;
 
+    @Column(unique = true)
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Good> goods;
+
+    @OneToMany
+    private List<User> administrators;
+
+    private byte[] logo;
 }

@@ -14,9 +14,10 @@ import java.util.*;
 @Service
 public class GoodService {
 
+    private static final int COUNT_OF_TOP_ITEMS = 9;
+
     @Autowired
     private HibernateGoodDAO hibernateGoodDAO;
-
 
     public void save(Good good) {
         hibernateGoodDAO.save(good);
@@ -89,6 +90,6 @@ public class GoodService {
     }
 
     public List<Good> getMostTrendingGoods(){
-        return  hibernateGoodDAO.getTopGoods();
+        return  hibernateGoodDAO.getTopGoods(COUNT_OF_TOP_ITEMS);
     }
 }

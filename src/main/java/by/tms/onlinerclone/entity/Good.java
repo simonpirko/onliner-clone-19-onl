@@ -18,6 +18,8 @@ public class Good {
 
     private String name;
 
+    private Long countOfSoldItems;
+
     @ManyToOne(cascade = CascadeType.ALL)
     private GoodCategory category;
 

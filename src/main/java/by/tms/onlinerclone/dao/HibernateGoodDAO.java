@@ -2,7 +2,6 @@ package by.tms.onlinerclone.dao;
 
 import by.tms.onlinerclone.entity.Good;
 import by.tms.onlinerclone.entity.GoodCharacters;
-import by.tms.onlinerclone.entity.Order;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;

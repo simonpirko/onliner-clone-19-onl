@@ -1,7 +1,10 @@
 package by.tms.onlinerclone.controller;
 
+import by.tms.onlinerclone.dto.GoodShowerDto;
 import by.tms.onlinerclone.dto.PageableGoodsShowerDto;
+import by.tms.onlinerclone.entity.Good;
 import by.tms.onlinerclone.entity.PageableGoods;
+import by.tms.onlinerclone.mapper.GoodMapper;
 import by.tms.onlinerclone.mapper.PageableGoodsMapper;
 import by.tms.onlinerclone.service.GoodService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/catalog")
@@ -83,5 +87,18 @@ public class CatalogController {
             requestURL.append("?").append(request.getQueryString());
         }
         return requestURL.toString();
+    }
+
+    @GetMapping("/item/{id}")
+    public String viewGoodById(@PathVariable long id, Model model){
+        Optional<Good> goodOptional = goodService.findByID(id);
+
+        if (goodOptional.isPresent()){
+            GoodShowerDto goodShowerDto = GoodMapper.goodToGoodShowerDto(goodOptional.get());
+            model.addAttribute("good", goodShowerDto);
+            return "good-details";
+        }
+
+        return "good-not-found";
     }
 }

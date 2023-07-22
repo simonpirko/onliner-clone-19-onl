@@ -13,8 +13,8 @@ import org.thymeleaf.templatemode.TemplateMode;
  * @author Simon Pirko on 27.06.23
  */
 @Configuration
-@ComponentScan("by.tms.onlinerclone")
 @EnableWebMvc
+@ComponentScan("by.tms.onlinerclone")
 public class WebConfiguration {
   @Bean
   public SpringResourceTemplateResolver templateResolver(){

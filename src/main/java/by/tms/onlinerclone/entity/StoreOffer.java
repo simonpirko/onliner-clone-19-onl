@@ -4,8 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -13,22 +11,17 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Good {
-
+public class StoreOffer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-
-    private String description;
+    @ManyToOne
+    private Good good;
 
     @ManyToOne
-    private GoodCategory category;
+    private Store store;
 
-    @ManyToMany
-    private Set<GoodCharacters> characters;
+    private BigDecimal price;
 
-    @ElementCollection
-    private List<byte[]> photos;
 }

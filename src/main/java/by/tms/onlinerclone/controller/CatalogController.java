@@ -88,17 +88,4 @@ public class CatalogController {
         }
         return requestURL.toString();
     }
-
-    @GetMapping("/item/{id}")
-    public String viewGoodById(@PathVariable long id, Model model){
-        Optional<Good> goodOptional = goodService.findByID(id);
-
-        if (goodOptional.isPresent()){
-            GoodShowerDto goodShowerDto = GoodMapper.goodToGoodShowerDto(goodOptional.get());
-            model.addAttribute("good", goodShowerDto);
-            return "good-details";
-        }
-
-        return "good-not-found";
-    }
 }

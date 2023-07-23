@@ -176,4 +176,11 @@ public class HibernateGoodDao {
         pageableGoods.setCountOfPages(countOfPages);
         return pageableGoods;
     }
+
+    public List<Good> getTopGoods(int limit) {
+        Session currentSession = sessionFactory.getCurrentSession();
+        Query<Good> query = currentSession.createQuery("from Good order by countOfSoldItems DESC", Good.class);
+        query.setMaxResults(limit);
+        return query.getResultList();
+    }
 }

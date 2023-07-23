@@ -24,4 +24,5 @@ public class StoreOffer {
 
     private BigDecimal price;
 
+    private Long countOfAvailableItems;
 }

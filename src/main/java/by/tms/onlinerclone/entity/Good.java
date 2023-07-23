@@ -25,7 +25,9 @@ public class Good {
 
     private BigDecimal price;
 
-    @ManyToOne
+    private Long countOfSoldItems;
+
+    @ManyToOne(cascade = CascadeType.ALL)
     private GoodCategory category;
 
     @ManyToMany

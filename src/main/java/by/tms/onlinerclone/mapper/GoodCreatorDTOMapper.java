@@ -22,7 +22,6 @@ public class GoodCreatorDTOMapper {
         return Good.builder()
                 .name(goodCreator.getName())
                 .description(goodCreator.getDescription())
-                .price(goodCreator.getPrice())
                 .photos(photos)
                 .build();
     }

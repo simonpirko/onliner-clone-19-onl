@@ -13,7 +13,6 @@ public class GoodMapper {
 
         GoodShowerDto goodShowerDto = new GoodShowerDto();
         goodShowerDto.setName(good.getName());
-        goodShowerDto.setPrice(good.getPrice());
         goodShowerDto.setDescription(good.getDescription());
         goodShowerDto.setCategory(good.getCategory().getName());
         goodShowerDto.setCharacters(good.getCharacters());

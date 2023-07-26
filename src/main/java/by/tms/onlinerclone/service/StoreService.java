@@ -32,6 +32,8 @@ public class StoreService {
 
     public void save(RegStoreDto regStoreDto) {
         Store store = RegStoreDTOMapper.regStoreToStore(regStoreDto);
+        User byId = hibernateUserDao.findById(regStoreDto.getUser().getId());
+        store.setSuperAdmin(byId);
         hibernateStoreDao.save(store);
     }
 

@@ -59,7 +59,7 @@ public class StoreController {
                 return "create-store";
             }
 
-            return "redirect:/store/manage";
+            return "redirect:/store/" + regStoreDto.getName() + "/manage";
         }
 
         return "redirect:/user/login";
@@ -199,11 +199,9 @@ public class StoreController {
 
             if (sessionUser != null) {
 
-                boolean isSuperAdmin = false;
+                boolean isSuperAdmin = store.getSuperAdmin().getId().equals(sessionUser.getId());
 
-                if (store.getSuperAdmin().getId().equals(sessionUser.getId())) {
-                    model.addAttribute("isSuperAdmin", isSuperAdmin);
-                }
+                model.addAttribute("isSuperAdmin", isSuperAdmin);
             }
 
         } else {
@@ -220,7 +218,7 @@ public class StoreController {
                          Model model) {
 
         storeService.update(store);
-        return "redirect:/store/" + storeName;
+        return "redirect:/store/" + store.getName();
     }
 
     @PostMapping("/{storeName}/manage/delete-admin")
